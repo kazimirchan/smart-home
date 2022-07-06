@@ -1,4 +1,8 @@
-export interface TableData {
+export interface TableColumnData {
     table: Array<string>
-    data: Array<Object>
+    data: Array<TableBodyData>
+}
+
+export interface TableBodyData {
+    [key: string]: string | number | boolean
 }

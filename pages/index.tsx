@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
-import { TableData } from "../models/TableData"
+import { TableColumnData, TableBodyData } from "../models/TableData"
 import styles from "../styles/Home.module.sass"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -12,22 +12,20 @@ import { Container, Typography } from "@mui/material"
 import axios from "axios"
 
 interface Props {
-  tableData: TableData
+  tableData: TableColumnData
 }
 
 export default function Home(props: Props) {
-  const tableHead = props.tableData.table.map((columnHeader: string, index: number) => {
+  const tableColumns = props.tableData.table.reduce((acc, cur) => ({ ...acc, [cur]: "" }), {})
+
+  const tableHead = Object.keys(tableColumns).map((columnHeader: string, index: number) => {
     return <TableCell key={"column_" + index}>{columnHeader}</TableCell>
   })
   const tableBody = props.tableData.data.map((row: Object, index: number) => {
-    let rowValues = Object.values(row)
-    return (
-      <TableRow key={index}>
-        {rowValues.map((cellData: string, childIndex: number) => {
-          return <TableCell key={index + "_" + childIndex}>{cellData}</TableCell>
-        })}
-      </TableRow>
-    )
+    const rowData = Object.keys(tableColumns).map((value: string, index: number) => {
+      return <TableCell key={"cell_" + index}>{row[value] || ""}</TableCell>
+    })
+    return <TableRow key={index}>{rowData}</TableRow>
   })
 
   return (
@@ -53,6 +51,11 @@ export default function Home(props: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const tableData = await axios.get("http://0.0.0.0:3000" + "/api/tableDataService").then((resp) => resp.data)
+  const tableData = await axios
+    .get("http://0.0.0.0:3000" + "/api/tableDataService")
+    .then((resp) => resp.data)
+    .catch((error) => {
+      console.error(error)
+    })
   return { props: { tableData: tableData } as Props }
 }

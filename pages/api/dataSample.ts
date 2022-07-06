@@ -8,17 +8,23 @@ export default function getSample(req: NextApiRequest, res: NextApiResponse) {
     })
   }
   return res.json({
-    "table": [
-      "name", "login"
-    ],
-    "data": [{
-      "name": "Jane",
-      "login": "Jane"
-    },
+    table: ["name", "login"],
+    data: [
       {
-        "name": "Jane 2",
-        "login": "Jane 2"
-      }
-    ]
+        name: "Jane",
+        login: "Jane",
+      },
+      {
+        name: "Jane 2",
+        login: "Jane 2",
+      },
+      {
+        login: "Jane 3",
+      },
+      {
+        login: "Jane 4 login",
+        name: "Jane 4 name",
+      },
+    ],
   })
 }
