@@ -1,18 +1,16 @@
+import type { NextApiRequest, NextApiResponse } from "next"
+import axios from "axios"
 
-import type { NextApiRequest, NextApiResponse } from 'next'
-import axios from 'axios'
+export default async function getTableData(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    return res.status(400).json({
+      message: "method not allowed",
+      type: "error",
+    })
+  }
 
-type Data = {
-  name: string
-}
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
   const url = "http://0.0.0.0:3000/api/dataSample"
-  axios.get(url).then((resp) => {
-    res.status(200).json(resp.data)
+  await axios.get(url).then((resp) => {
+    return res.status(200).json(resp.data)
   })
-  
 }

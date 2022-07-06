@@ -16,15 +16,15 @@ interface Props {
 }
 
 export default function Home(props: Props) {
-  const tableHead = props.tableData.table.map((columnHeader: string) => {
-    return <TableCell>{columnHeader}</TableCell>
+  const tableHead = props.tableData.table.map((columnHeader: string, index: number) => {
+    return <TableCell key={"column_" + index}>{columnHeader}</TableCell>
   })
-  const tableBody = props.tableData.data.map((row: Object) => {
+  const tableBody = props.tableData.data.map((row: Object, index: number) => {
     let rowValues = Object.values(row)
     return (
-      <TableRow>
-        {rowValues.map((cellData: string) => {
-          return <TableCell>{cellData}</TableCell>
+      <TableRow key={index}>
+        {rowValues.map((cellData: string, childIndex: number) => {
+          return <TableCell key={index + "_" + childIndex}>{cellData}</TableCell>
         })}
       </TableRow>
     )

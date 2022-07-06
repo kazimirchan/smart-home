@@ -7,7 +7,7 @@ export default function getSample(req: NextApiRequest, res: NextApiResponse) {
       type: "error",
     })
   }
-  res.status(200).json({
+  return res.json({
     "table": [
       "name", "login"
     ],
